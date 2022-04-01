@@ -183,6 +183,8 @@ public struct ScrollViewProxy {
     /// A publisher that publishes changes to the scroll views offset
     public fileprivate(set) var offset: OffsetPublisher = Just(.zero).eraseToAnyPublisher()
 
+
+    
     /// Scrolls to an edge or corner
     public func scrollTo(_ alignment: Alignment, animated: Bool = true) {
         guard let scrollView = coordinator.scrollView else { return }
@@ -202,6 +204,66 @@ public struct ScrollViewProxy {
         let visibleFrame = frame(cellFrame, with: alignment)
         scrollView.scrollRectToVisible(visibleFrame, animated: animated)
     }
+    
+    /// returns the current content offset
+    public func getContentOffset() -> CGPoint {
+        guard let scrollView = coordinator.scrollView else { return CGPoint(x:0.0, y:0.0)  }
+        
+        return scrollView.contentOffset
+    }
+    
+    /// returns the current content offset
+    public func setContentOffset(_ newContentOffset:CGPoint) {
+        guard let scrollView = coordinator.scrollView else { return }
+        
+        scrollView.contentOffset = newContentOffset
+        
+    }
+    
+    /// returns the current content offset
+    public func getContentOffsetAsRatio() -> (x : CGFloat, y : CGFloat) {
+        guard let scrollView = coordinator.scrollView else { return (x:0.0, y:0.0)  }
+        
+        let xRatio =  scrollView.contentOffset.x / (scrollView.contentSize.width - scrollView.visibleSize.width)
+        let yRatio =  scrollView.contentOffset.y / (scrollView.contentSize.height -  scrollView.visibleSize.height)
+        
+        return (x:xRatio, y:yRatio)
+    }
+
+    public func setContentOffsetAsRatio(xRatio : CGFloat, yRatio : CGFloat) {
+        guard let scrollView = coordinator.scrollView else { return }
+        
+        let largestPossibleOffsetX = scrollView.contentSize.width - scrollView.visibleSize.width
+        let largetstPossibleOffsetY = scrollView.contentSize.height - scrollView.visibleSize.height
+        
+        scrollView.contentOffset = CGPoint(x: largestPossibleOffsetX * xRatio, y: largetstPossibleOffsetY * yRatio)
+    }
+    
+    public func setXValueOfContentOffsetAsRatio(xRatio : CGFloat) {
+        guard let scrollView = coordinator.scrollView else { return }
+        
+        let largestPossibleOffsetX = scrollView.contentSize.width - scrollView.visibleSize.width
+        
+        scrollView.contentOffset = CGPoint(x: largestPossibleOffsetX * xRatio, y: scrollView.contentOffset.y)
+    }
+    
+    public func setYValueOfContentOffsetAsRatio(yRatio : CGFloat) {
+        guard let scrollView = coordinator.scrollView else { return }
+        
+        let largetstPossibleOffsetY = scrollView.contentSize.height - scrollView.visibleSize.height
+        
+        scrollView.contentOffset = CGPoint(x: scrollView.contentOffset.x, y: largetstPossibleOffsetY * yRatio)
+    }
+    
+    public func setScrollsToTop(_ shouldScrollToTop:Bool) {
+        guard let scrollView = coordinator.scrollView else { return }
+        
+        scrollView.scrollsToTop = shouldScrollToTop
+    }
+    
+
+    
+
 
     private func frame(_ frame: CGRect, with alignment: Alignment) -> CGRect {
         guard let scrollView = coordinator.scrollView else { return frame }
