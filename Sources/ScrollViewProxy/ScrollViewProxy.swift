@@ -216,8 +216,9 @@ public struct ScrollViewProxy {
     public func setContentOffset(_ newContentOffset:CGPoint) {
         guard let scrollView = coordinator.scrollView else { return }
         
-        scrollView.contentOffset = newContentOffset
-        
+        DispatchQueue.main.async {
+            scrollView.contentOffset = newContentOffset
+        }
     }
     
     /// returns the current content offset
@@ -236,7 +237,9 @@ public struct ScrollViewProxy {
         let largestPossibleOffsetX = scrollView.contentSize.width - scrollView.visibleSize.width
         let largetstPossibleOffsetY = scrollView.contentSize.height - scrollView.visibleSize.height
         
-        scrollView.contentOffset = CGPoint(x: largestPossibleOffsetX * xRatio, y: largetstPossibleOffsetY * yRatio)
+        DispatchQueue.main.async {
+            scrollView.contentOffset = CGPoint(x: largestPossibleOffsetX * xRatio, y: largetstPossibleOffsetY * yRatio)
+        }
     }
     
     public func setXValueOfContentOffsetAsRatio(xRatio : CGFloat) {
@@ -244,7 +247,9 @@ public struct ScrollViewProxy {
         
         let largestPossibleOffsetX = scrollView.contentSize.width - scrollView.visibleSize.width
         
-        scrollView.contentOffset = CGPoint(x: largestPossibleOffsetX * xRatio, y: scrollView.contentOffset.y)
+        DispatchQueue.main.async {
+            scrollView.contentOffset = CGPoint(x: largestPossibleOffsetX * xRatio, y: scrollView.contentOffset.y)
+        }
     }
     
     public func setYValueOfContentOffsetAsRatio(yRatio : CGFloat) {
@@ -252,7 +257,9 @@ public struct ScrollViewProxy {
         
         let largetstPossibleOffsetY = scrollView.contentSize.height - scrollView.visibleSize.height
         
-        scrollView.contentOffset = CGPoint(x: scrollView.contentOffset.x, y: largetstPossibleOffsetY * yRatio)
+        DispatchQueue.main.async {
+            scrollView.contentOffset = CGPoint(x: scrollView.contentOffset.x, y: largetstPossibleOffsetY * yRatio)
+        }
     }
     
     public func setScrollsToTop(_ shouldScrollToTop:Bool) {
