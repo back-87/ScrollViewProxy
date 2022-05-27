@@ -148,7 +148,9 @@ public struct ScrollViewReader<Content: View>: View {
             .coordinateSpace(name: proxy.space)
             .transformPreference(ScrollViewProxyPreferenceKey.self) { preferences in
                 preferences.forEach { preference in
-                    self.proxy.save(geometry: preference.geometry, for: preference.id)
+                    DispatchQueue.main.async {
+                        self.proxy.save(geometry: preference.geometry, for: preference.id)
+                    }
                 }
             }
             .onPreferenceChange(ScrollViewProxyPreferenceKey.self) { _ in
