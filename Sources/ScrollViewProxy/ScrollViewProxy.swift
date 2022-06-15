@@ -214,13 +214,25 @@ public struct ScrollViewProxy {
         return scrollView.contentOffset
     }
     
-    /// returns the current content offset
+    
+
+    
+    /// sets the current content offset
     public func setContentOffset(_ newContentOffset:CGPoint) {
         guard let scrollView = coordinator.scrollView else { return }
         
         scrollView.contentOffset = newContentOffset
         
     }
+    
+    
+    /// returns the current content offset
+    public func getVisibleSize() -> CGSize {
+        guard let scrollView = coordinator.scrollView else { return CGSize(width:0.0, height:0.0)  }
+        
+        return scrollView.visibleSize
+    }
+    
     
     /// returns the current content offset
     public func getContentOffsetAsRatio() -> (x : CGFloat, y : CGFloat) {
